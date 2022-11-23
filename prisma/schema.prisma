@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName    String
+  lastName     String
+  password     String
+  contactEmail String   @unique
+  createdAt    DateTime @default(now())
+  profile      Profile?
+  posts        Post[]
+  order        order[]
+}
+
+model Profile {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  bio          String
+  contactPhone Int
+  location     String
+  lon          Float
+  lat          Float
+  image        String
+  amountEarned Float  @default(0)
+  points       Int    @default(0)
+  user         User   @relation(fields: [id], references: [id])
+}
+
+enum POST_TYPES {
+  GLASS
+  ORGANIC
+  PLASTIC
+  METAL
+  ELECTRONICt
+}
+
+model Post {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  location    String
+  lon         Float
+  lat         Float
+  image       String
+  description String
+  type        POST_TYPES @default(PLASTIC)
+  belongsToId String
+  createdAt   DateTime   @default(now())
+  belongsTo   User       @relation(fields: [belongsToId], references: [id])
+}
+
+model order {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  location    String
+  lon         Float
+  lat         Float
+  description String
+  image       String
+  amount_bid  Float
+  type        POST_TYPES @default(PLASTIC)
+  belongsToId String
+  belongsTo   User       @relation(fields: [belongsToId], references: [id])
+  createdAt   DateTime   @default(now())
+  quantity    QUANTITY   @default(SMALL)
+}
+
+enum QUANTITY {
+  SMALL
+  MEDIUM
+  HIGH
+}
