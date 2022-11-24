@@ -17,7 +17,7 @@ router.post(
   handleErrors,
   async (req, res) => {
     req.header("Content-Type", "application/json");
-    const registrationToken = req.body.registrationToken;
+    // const registrationToken = req.body.registrationToken;
     const message = {
       notification: {
         title: req.body.title,
@@ -41,18 +41,21 @@ router.post(
 );
 
 router.post(
-  "/:id",
+  "/device",
   body("title").isString(),
   body("body").isString(),
+  body("token").isString(),
   handleErrors,
   async (req, res) => {
     req.header("Content-Type", "application/json");
-    const registrationToken = req.params.id;
+    const registrationToken = req.body.token
     const message = {
       notification: {
         title: req.body.title,
         body: req.body.body,
       },
+
+
     };
     const options = notification_options;
     adminz
