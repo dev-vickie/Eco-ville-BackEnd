@@ -9,7 +9,6 @@ export const createUser =
   body("contactEmail").isString(),
   body("password"),
   handleErrors,
-
   async (req, res) => {
     try {
       var user = await prisma.user.create({
@@ -40,7 +39,6 @@ export const signInUser =
   (body("contactEmail").isString(),
   body("password").isString(),
   handleErrors,
-
   async (req, res) => {
     try {
       const user = await prisma.user.findUnique({
