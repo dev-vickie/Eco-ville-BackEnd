@@ -1,4 +1,4 @@
-import {body} from "express-validator";
+import { body } from "express-validator";
 import prisma from "../db.js";
 import { Router } from "express";
 import { handleErrors } from "../middleware/handleError.js";
@@ -11,7 +11,7 @@ router.post(
   body("location").isString(),
   body("lon"),
   body("lat"),
-  body("type").isIn(["GLASS","ORGANIC","PLASTIC","METAL","ELECTRONIC"]),
+  body("type").isIn(["GLASS", "ORGANIC", "PLASTIC", "METAL", "ELECTRONIC"]),
   body("image").isString(),
   body("description").isString(),
   body("belongsToId").isString(),
@@ -63,7 +63,7 @@ router.get("/user/:id", async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
       where: {
-        belongsToId: req.params.id,
+        belongsToId: req.user.id,
       },
     });
 
@@ -99,7 +99,7 @@ router.get("/:id", async (req, res) => {
 
 router.delete(
   "/:id",
-                                                                                  body("userId").isString(),
+  body("userId").isString(),
   handleErrors,
 
   async (req, res) => {
@@ -108,8 +108,8 @@ router.delete(
 
       const post = await prisma.post.delete({
         where: {
-          id: req.body.id,
-          belongsToId: req.body.userId,
+          id: req.params.id,
+          belongsToId: req.user.id,
         },
       });
       if (!post) {
@@ -159,6 +159,5 @@ router.put(
     }
   }
 );
-
 
 export default router;
