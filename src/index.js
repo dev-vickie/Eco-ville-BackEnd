@@ -6,13 +6,18 @@ import { protect } from "../Auth/auth.js";
 import postRouter from "../Post/post.js";
 import orderRouter from "../Order/order.js";
 import bodyParser from "body-parser";
-import { adminz } from "../Firebase/firebase.config.js";
-import { handleErrors } from "../middleware/handleError.js";
-import { body } from "express-validator";
 import notificationRouter from "../Firebase/notfication.js";
 import payRouter from "../Mpesa/mpesa.js";
+import profileRouter from "../profile/profile.js"
+import verifyRouter from "../User/verify.js"
 
 export const app = express();
+
+app.set('view engine', 'ejs');
+
+// Set up the Body Parser to your App
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use(cors());
@@ -31,13 +36,16 @@ app.post("/register", createUser);
 app.post("/login", signInUser);
 app.post("/remove", protect, removeAccount);
 
+
 app.use("/post", protect, postRouter);
 app.use("/order", protect, orderRouter);
 app.use("/notification", protect, notificationRouter);
 app.use("/pay", protect, payRouter);
+app.use("/profile",protect, profileRouter)
+app.use("/verify", verifyRouter)
 
 export const start = () => {
   app.listen(5000, () => {
-    console.log("Server is running on port 5000");
+    console.log("Server is running on port 6000");
   });
 };
