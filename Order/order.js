@@ -1,35 +1,42 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { handleErrors } from "../middleware/handleError.js";
-import prisma  from "../db.js";
+import prisma from "../db.js";
 import { rmSync } from "fs";
 
 const router = Router();
 
-router.get("/user/:id", async (req, res) => {
+router.get("/", async (req, res) => {
   req.header("Content-Type", "application/json");
 
   try {
     const orders = await prisma.order.findMany({
       where: {
-        belongsToId: req.params.id,
+        belongsToId: req.user.id,
       },
     });
+    if (!orders) {
+      throw new Error("Could not fetch orders");
+    }
+    res.json({ orders });
   } catch (e) {
     rmSync.status(500).json({ message: e.message });
   }
 });
 
-router.get("/:id", body("belongsToId"), async (req, res) => {
+router.get("/:id", async (req, res) => {
   req.header("Content-Type", "application/json");
 
   try {
-    const orders = await prisma.order.findMany({
+    const order = await prisma.order.findUnique({
       where: {
         id: req.params.id,
-        belongsToId: req.body.belongsToId,
       },
     });
+    if (!order) {
+      throw new Error("Could not fetch orders");
+    }
+    res.json({ order });
   } catch (e) {
     rmSync.status(500).json({ message: e.message });
   }
@@ -45,6 +52,7 @@ router.post(
   body("image").isString(),
   body("amount_bid"),
   body("quantity").isIn(["SMALL", "MEDIUM", "HIGH"]),
+  body("token").isString(),
   handleErrors,
   async (req, res) => {
     req.header("Content-Type", "application/json");
@@ -52,6 +60,7 @@ router.post(
     try {
       const order = await prisma.order.create({
         data: {
+          id: req.user.id,
           name: req.body.name,
           location: req.body.location,
           lon: req.body.lon,
@@ -65,6 +74,7 @@ router.post(
       if (!order) {
         throw new Error("The order could not be placed");
       }
+      // orderNotification("Order has been placed Successfully",req.body.name,req.body.token)
       res.json({ message: "Order placed successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message });
@@ -87,6 +97,7 @@ router.put(
     try {
       const order = await prisma.order.create({
         data: {
+          id: req.user.id,
           name: req.body.name,
           location: req.body.location,
           lon: req.body.lon,
@@ -124,6 +135,5 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: e.message });
   }
 });
-
 
 export default router;
