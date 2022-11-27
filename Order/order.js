@@ -46,7 +46,6 @@ router.post(
   "/",
   body("name").isString(),
   body("location").isString(),
-  body("belongsToId").isString(),
   body("lon"),
   body("lat"),
   body("image").isString(),
