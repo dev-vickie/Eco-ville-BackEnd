@@ -67,7 +67,7 @@ router.post(
           lat: req.body.lat,
           image: req.body.image,
           amount_bid: req.body.amount_bid,
-          belongsToId: req.body.belongsToId,
+          belongsToId: req.user.id,
           quantity: req.body.quantity,
         },
       });
