@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { handleErrors } from "../middleware/handleError.js";
-import prisma from "../db.js";
+import prisma from '../../src/db.js';
 import { rmSync } from "fs";
 
 const router = Router();

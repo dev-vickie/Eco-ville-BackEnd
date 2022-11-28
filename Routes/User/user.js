@@ -1,6 +1,10 @@
-import prisma from "../db.js";
+import prisma from '../../src/db.js';
 import { body } from "express-validator";
-import { hashPassword, comparePassword, createJWT } from "../Auth/auth.js";
+import {
+  hashPassword,
+  comparePassword,
+  createJWT,
+} from "../Auth/auth.js"
 import { handleErrors } from "../middleware/handleError.js";
 
 export const createUser =

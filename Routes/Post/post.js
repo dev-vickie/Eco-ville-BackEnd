@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import prisma from "../db.js";
+import prisma from '../../src/db.js';
 import { Router } from "express";
 import { handleErrors } from "../middleware/handleError.js";
 

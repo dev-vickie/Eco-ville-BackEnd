@@ -1,14 +1,13 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { handleErrors } from "../middleware/handleError.js";
-import { adminz } from "../Firebase/firebase.config.js";
+import { adminz } from "./firebase.config.js";
 
 const router = Router();
 const notification_options = {
   priority: "high",
   timeToLive: 60 * 60 * 24,
 };
-
 
 router.post(
   "/",
@@ -48,14 +47,12 @@ router.post(
   handleErrors,
   async (req, res) => {
     req.header("Content-Type", "application/json");
-    const registrationToken = req.body.token
+    const registrationToken = req.body.token;
     const message = {
       notification: {
         title: req.body.title,
         body: req.body.body,
       },
-
-
     };
     const options = notification_options;
     adminz
