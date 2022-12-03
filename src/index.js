@@ -45,7 +45,7 @@ app.use("/verify", verifyRouter);
 app.use("/feedback", protect, feedbackRouter);
 
 export const start = () => {
-  app.listen(6000, () => {
+  app.listen(process.env.PORT, () => {
     console.log("Server is running on port 6000");
   });
 };
