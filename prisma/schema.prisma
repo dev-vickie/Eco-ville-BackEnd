@@ -78,3 +78,10 @@ enum QUANTITY {
   MEDIUM
   HIGH
 }
+
+model Feedback {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  feedback String
+  createdAt DateTime @default(now())
+}
+
