@@ -10,7 +10,7 @@ import notificationRouter from "../Routes/Firebase/notfication.js";
 import payRouter from "../Routes/Mpesa/mpesa.js";
 import profileRouter from "../Routes/profile/profile.js";
 import verifyRouter from "../Routes/User/verify.js";
-import feedbackRouter from "../Routes/FeedBack/feedback.js";
+import feedbackRouter from "../Routes/Feedback/feedback.js";
 export const app = express();
 
 app.set("view engine", "ejs");
