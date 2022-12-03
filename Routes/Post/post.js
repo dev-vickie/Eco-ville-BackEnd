@@ -29,7 +29,7 @@ router.post(
           image: req.body.image,
           description: req.body.description,
           type: req.body.type,
-          belongsToId: req.body.belongsToId,
+          belongsToId: req.user.id,
         },
       });
 
