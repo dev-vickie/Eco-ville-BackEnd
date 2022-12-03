@@ -7,9 +7,10 @@ import { rmSync } from "fs";
 const router = Router();
 
 router.get("/", async (req, res) => {
-  req.header("Content-Type", "application/json");
+  
 
   try {
+    req.header("Content-Type", "application/json");
     const orders = await prisma.order.findMany({
       where: {
         belongsToId: req.user.id,
@@ -20,7 +21,7 @@ router.get("/", async (req, res) => {
     }
     res.json({ orders });
   } catch (e) {
-    rmSync.status(500).json({ message: e.message });
+    res.status(500).json({ message: e.message });
   }
 });
 
@@ -50,6 +51,7 @@ router.post(
   body("lat"),
   body("image").isString(),
   body("amount_bid"),
+  body("description").isString(),
   body("quantity").isIn(["SMALL", "MEDIUM", "HIGH"]),
   body("token").isString(),
   handleErrors,
@@ -59,12 +61,12 @@ router.post(
     try {
       const order = await prisma.order.create({
         data: {
-          id: req.user.id,
           name: req.body.name,
           location: req.body.location,
           lon: req.body.lon,
           lat: req.body.lat,
           image: req.body.image,
+          description: req.body.description,
           amount_bid: req.body.amount_bid,
           belongsToId: req.user.id,
           quantity: req.body.quantity,
@@ -82,21 +84,17 @@ router.post(
 );
 
 router.put(
-  "/",
-  body("name").isString(),
-  body("location").isString(),
-  body("lon"),
-  body("lat"),
-  body("amount_bid"),
-  body("quantity").isIn(["SMALL", "MEDIUM", "HIGH"]),
+  "/:id",
   handleErrors,
   async (req, res) => {
     req.header("Content-Type", "application/json");
 
     try {
-      const order = await prisma.order.create({
+      const order = await prisma.order.update({
+        where: {
+          id: req.params.id,
+        },
         data: {
-          id: req.user.id,
           name: req.body.name,
           location: req.body.location,
           lon: req.body.lon,
