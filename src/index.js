@@ -10,7 +10,7 @@ import notificationRouter from "../Routes/Firebase/notfication.js";
 import payRouter from "../Routes/Mpesa/mpesa.js";
 import profileRouter from "../Routes/profile/profile.js";
 import verifyRouter from "../Routes/User/verify.js";
-
+import feedbackRouter from "../Routes/FeedBack/feedback.js";
 export const app = express();
 
 app.set("view engine", "ejs");
@@ -42,9 +42,10 @@ app.use("/notification", protect, notificationRouter);
 app.use("/pay", protect, payRouter);
 app.use("/profile", protect, profileRouter);
 app.use("/verify", verifyRouter);
+app.use("/feedback", protect, feedbackRouter);
 
 export const start = () => {
-  app.listen(5000, () => {
+  app.listen(6000, () => {
     console.log("Server is running on port 6000");
   });
 };
