@@ -80,3 +80,25 @@ export const removeAccount = async (req, res) => {
     res.status(500).json({ message: e.message });
   }
 };
+
+export const changePassword = async (req,res)=>{
+  try{
+    const password = await prisma.user.update({
+      where:{
+        id: req.user.id
+      },
+      data:{
+        password: await hashPassword(req.body.password),
+      }
+    });
+
+    if(!password){
+      throw new Error("Password could not be changed")
+    }
+
+    res.json({message: "password changed successfully"})
+
+  }catch(e){
+    res.status(500).json({message:e.message});
+  }
+}

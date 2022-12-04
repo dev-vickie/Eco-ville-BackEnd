@@ -1,7 +1,7 @@
 import express, { response } from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { createUser, signInUser, removeAccount } from "../Routes/User/user.js";
+import { createUser, signInUser, removeAccount,changePassword } from "../Routes/User/user.js";
 import { protect } from "../Routes/Auth/auth.js";
 import postRouter from "../Routes/Post/post.js";
 import orderRouter from "../Routes/Order/order.js";
@@ -35,6 +35,7 @@ app.all("/", (req, res) => {
 app.post("/register", createUser);
 app.post("/login", signInUser);
 app.post("/remove", protect, removeAccount);
+app.put("/changePassword", protect, changePassword);
 
 app.use("/post", protect, postRouter);
 app.use("/order", protect, orderRouter);
@@ -46,6 +47,6 @@ app.use("/feedback", protect, feedbackRouter);
 
 export const start = () => {
   app.listen(process.env.PORT, () => {
-    console.log("Server is running on port 6000");
+    console.log("Server is running on port " + process.env.PORT);
   });
 };
