@@ -82,6 +82,7 @@ passport.use(
   )
 );
 
+
 app.all("/", (req, res) => {
   res.send("This is the home page");
 });
