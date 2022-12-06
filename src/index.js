@@ -18,8 +18,8 @@ import verifyRouter from "../Routes/User/verify.js";
 import feedbackRouter from "../Routes/Feedback/feedback.js";
 import passport from "passport";
 import session from "express-session";
-import GoogleStrategy from "passport-google-oauth2";
-import TwitterStrategy from "passport-twitter";
+import cookieSession from "cookie-session";
+import authRouter from "../Routes/Auth/passport/passport.setup.js";
 
 export const app = express();
 
@@ -42,49 +42,18 @@ app.use(
     cookie: { secure: true },
   })
 );
+// app.use(cookieSession({
+//   name: 'session',
+//   keys: ['key1', 'key2'],
+// }))
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
-      passReqToCallback: true,
-    },
-    function (request, accessToken, refreshToken, profile, done) {
-      console.log(profile);
-      return done(null, profile);
-    }
-  )
-);
-
-passport.use(
-  new TwitterStrategy(
-    {
-      consumerKey: process.env.TWITTER_CONSUMER_KEY,
-      consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: process.env.TWITTER_CALLBACK_URL,
-      passReqToCallback: true,
-    },
-    function (request, accessToken, refreshToken, profile, done) {
-      console.log(profile);
-      return done(null, profile);
-    }
-  )
-);
+authRouter.initialize();
 
 
-app.all("/", (req, res) => {
+
+app.get("/", (req, res) => {
   res.send("This is the home page");
 });
 
@@ -96,7 +65,6 @@ app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-app.get("/auth/twitter", passport.authenticate("twitter"));
 app.get(
   "/auth/google",
   passport.authenticate("google", { failureRedirect: "/error" }),
@@ -111,14 +79,6 @@ app.get(
         "Content-Type",
         "application/json"
       );
-      // await prisma.user.create({
-      //   data: {
-      //     firstName: firstName,
-      //     lastName: lastName,
-      //     contactEmail: email,
-      //     password: "pass123",
-      //   },
-      // });
       res.send(req.user);
     } catch (e) {
       console.log(e.toString());
@@ -126,28 +86,28 @@ app.get(
   }
 );
 
+
+app.get("/auth/twitter", passport.authenticate("twitter"));
+
 app.get(
   "/auth/twitter",
   passport.authenticate("twitter", { failureRedirect: "/error" }),
   async (req, res) => {
-    res.header(
-      "Access-Control-Allow-Origin",
-      "*",
-      "Content-Type",
-      "application/json"
-    );
-    // await prisma.user.create({
-    //   data: {
-    //     firstName: firstName,
-    //     lastName: lastName,
-    //     contactEmail: email,
-    //     password: "pass123",
-    //   },
-    // });
-    // res.json({ firstName, lastName, email, password });
-    res.send(req.user);
+    res.json(req.user);
   }
 );
+
+app.get('/error', (req,res)=>{
+  res.send('Error logging in')  
+})
+
+app.get('/logout',  async(req,res)=>{
+  req.session = null;
+  req.logout(function(err) {
+    if (err) console.log(err);
+    res.redirect('/');
+  });
+});
 
 app.get("/success", (req, res) => {
   res.json({ firstName, lastName, email, password });
