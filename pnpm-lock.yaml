@@ -22,6 +22,7 @@ specifiers:
   passport: ^0.6.0
   passport-google-oauth2: ^0.2.0
   passport-oauth2: ^1.6.1
+  passport-twitter: ^1.0.4
   prisma: ^4.7.1
   ts-node: ^10.9.1
   typescript: ^4.9.3
@@ -47,6 +48,7 @@ dependencies:
   passport: 0.6.0
   passport-google-oauth2: 0.2.0
   passport-oauth2: 1.6.1
+  passport-twitter: 1.0.4
 
 devDependencies:
   '@types/node': 18.11.9
@@ -2985,6 +2987,15 @@ packages:
       passport-oauth2: 1.6.1
     dev: false
 
+  /passport-oauth1/1.2.0:
+    resolution: {integrity: sha512-Sv2YWodC6jN12M/OXwmR4BIXeeIHjjbwYTQw4kS6tHK4zYzSEpxBgSJJnknBjICA5cj0ju3FSnG1XmHgIhYnLg==}
+    engines: {node: '>= 0.4.0'}
+    dependencies:
+      oauth: 0.9.15
+      passport-strategy: 1.0.0
+      utils-merge: 1.0.1
+    dev: false
+
   /passport-oauth2/1.6.1:
     resolution: {integrity: sha512-ZbV43Hq9d/SBSYQ22GOiglFsjsD1YY/qdiptA+8ej+9C1dL1TVB+mBE5kDH/D4AJo50+2i8f4bx0vg4/yDDZCQ==}
     engines: {node: '>= 0.4.0'}
@@ -2999,6 +3010,14 @@ packages:
   /passport-strategy/1.0.0:
     resolution: {integrity: sha512-CB97UUvDKJde2V0KDWWB3lyf6PC3FaZP7YxZ2G8OAtn9p4HI9j9JLP9qjOGZFvyl8uwNT8qM+hGnz/n16NI7oA==}
     engines: {node: '>= 0.4.0'}
+    dev: false
+
+  /passport-twitter/1.0.4:
+    resolution: {integrity: sha512-qvdauqCqCJJci82mJ9hZZQ6nAv7aSHV31svL8+9H7mRlDdXCdfU6AARQrmmJu3DRmv9fvIebM7zzxR7mVufN3A==}
+    engines: {node: '>= 0.4.0'}
+    dependencies:
+      passport-oauth1: 1.2.0
+      xtraverse: 0.1.0
     dev: false
 
   /passport/0.6.0:
@@ -3682,6 +3701,19 @@ packages:
     resolution: {integrity: sha512-nquOebG4sngPmGPICTS5EnxqhKbCmz5Ox5hsszI2T6U5qdrJizBc+0ilYSEjTSzU0yZcmvppztXe/5Al5fUwdg==}
     dev: false
     optional: true
+
+  /xmldom/0.1.31:
+    resolution: {integrity: sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==}
+    engines: {node: '>=0.1'}
+    deprecated: Deprecated due to CVE-2021-21366 resolved in 0.5.0
+    dev: false
+
+  /xtraverse/0.1.0:
+    resolution: {integrity: sha512-MANQdlG2hl1nQobxz1Rv8hsS1RuBS0C1N6qTOupv+9vmfrReePdxhmB2ecYjvsp4stJ80HD7erjkoF1Hd/FK9A==}
+    engines: {node: '>= 0.4.0'}
+    dependencies:
+      xmldom: 0.1.31
+    dev: false
 
   /y18n/5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
