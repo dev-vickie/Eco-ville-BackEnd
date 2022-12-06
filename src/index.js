@@ -12,9 +12,9 @@ import profileRouter from "../Routes/profile/profile.js";
 import verifyRouter from "../Routes/User/verify.js";
 import feedbackRouter from "../Routes/Feedback/feedback.js";
 import passport from "passport";
-import '../Routes/Auth/passport/passport.setup.js';
-import { profile } from "console";
 import session from "express-session";
+import GoogleStrategy from "passport-google-oauth2";
+
 export const app = express();
 
 
@@ -38,6 +38,28 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+  });
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+  });
+
+passport.use(
+new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.GOOGLE_CALLBACK_URL,
+  passReqToCallback: true,
+},function(request, accessToken, refreshToken, profile, done) {
+  console.log(profile);
+  return done(null, profile);
+}
+
+)
+);
+
 app.all("/", (req, res) => {
   res.send("This is the home page");
 });
@@ -51,6 +73,7 @@ app.get('/auth/google', passport.authenticate('google', {failureRedirect: "/erro
   const firstName = req.user.name.givenName;
   const lastName = req.user.name.familyName;
   const email = req.user.emails[0].value;
+  res.header("Access-Control-Allow-Origin", "*", "Content-Type", "application/json");
   await prisma.user.create({
     data: {
       firstName: firstName,
