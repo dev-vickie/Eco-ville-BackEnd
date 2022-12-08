@@ -1,14 +1,12 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { handleErrors } from "../middleware/handleError.js";
-import prisma from '../../src/db.js';
+import prisma from "../../src/db.js";
 import { rmSync } from "fs";
 
 const router = Router();
 
 router.get("/", async (req, res) => {
-  
-
   try {
     req.header("Content-Type", "application/json");
     const orders = await prisma.order.findMany({
@@ -83,35 +81,31 @@ router.post(
   }
 );
 
-router.put(
-  "/:id",
-  handleErrors,
-  async (req, res) => {
-    req.header("Content-Type", "application/json");
+router.put("/:id", handleErrors, async (req, res) => {
+  req.header("Content-Type", "application/json");
 
-    try {
-      const order = await prisma.order.update({
-        where: {
-          id: req.params.id,
-        },
-        data: {
-          name: req.body.name,
-          location: req.body.location,
-          lon: req.body.lon,
-          lat: req.body.lat,
-          amount_bid: req.body.amount_bid,
-          quantity: req.body.quantity,
-        },
-      });
-      if (!order) {
-        throw new Error("The order could not be updated");
-      }
-      res.json({ message: "Order updated successfully" });
-    } catch (e) {
-      res.status(500).json({ message: e.message });
+  try {
+    const order = await prisma.order.update({
+      where: {
+        id: req.params.id,
+      },
+      data: {
+        name: req.body.name,
+        location: req.body.location,
+        lon: req.body.lon,
+        lat: req.body.lat,
+        amount_bid: req.body.amount_bid,
+        quantity: req.body.quantity,
+      },
+    });
+    if (!order) {
+      throw new Error("The order could not be updated");
     }
+    res.json({ message: "Order updated successfully" });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
   }
-);
+});
 
 router.delete("/:id", async (req, res) => {
   req.header("Content-Type", "application/json");

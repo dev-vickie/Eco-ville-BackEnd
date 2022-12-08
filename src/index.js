@@ -19,8 +19,9 @@ import feedbackRouter from "../Routes/Feedback/feedback.js";
 import passport from "passport";
 import session from "express-session";
 import cookieSession from "cookie-session";
-import authRouter from "../Routes/Auth/passport/passport.setup.js";
-
+// import authRouter from "../Routes/Auth/passport/passport.setup.js";
+import GoogleStrategy from "passport-google-oauth2";
+import TwitterStrategy from "passport-twitter";
 export const app = express();
 
 app.set("view engine", "ejs");
@@ -49,7 +50,47 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-authRouter.initialize();
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      passReqToCallback: true,
+      proxy:false
+    },
+    function (request, accessToken, refreshToken, profile, done) {
+      console.log(profile);
+      return done(null, profile);
+    }
+  )
+);
+
+passport.use(
+  new TwitterStrategy(
+    {
+      consumerKey: process.env.TWITTER_CONSUMER_KEY,
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+      callbackURL: process.env.TWITTER_CALLBACK_URL,
+      passReqToCallback: true,
+      proxy: false,
+    },
+    function (request, accessToken, refreshToken, profile, done) {
+      console.log(profile);
+      return done(null, profile);
+    }
+  )
+);
 
 
 
