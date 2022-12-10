@@ -101,7 +101,7 @@ app.get("/", (req, res) => {
 app.post("/register", createUser);
 app.post("/login", signInUser);
 app.post("/remove", protect, removeAccount);
-app.put("/changePassword", protect, changePassword);
+app.put("/changePassword", changePassword);
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
