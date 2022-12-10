@@ -10,8 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+   id String @id @default(auto()) @map("_id") @db.ObjectId
   firstName    String
   lastName     String
   password     String
@@ -23,7 +24,7 @@ model User {
 }
 
 model Profile {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
+   id String @id @default(auto()) @map("_id") @db.ObjectId
   bio          String
   contactPhone Int
   location     String
@@ -44,7 +45,7 @@ enum POST_TYPES {
 }
 
 model Post {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   location    String
   lon         Float
@@ -58,7 +59,7 @@ model Post {
 }
 
 model order {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+   id String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   location    String
   lon         Float
@@ -80,8 +81,7 @@ enum QUANTITY {
 }
 
 model Feedback {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+   id String @id @default(auto()) @map("_id") @db.ObjectId
   feedback String
   createdAt DateTime @default(now())
 }
-
