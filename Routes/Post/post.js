@@ -14,7 +14,7 @@ router.post(
   body("type").isIn(["GLASS", "ORGANIC", "PLASTIC", "METAL", "ELECTRONIC"]),
   body("image").isString(),
   body("description").isString(),
-  body("belongsToId").isString(),
+  body("belongsToId"),
   handleErrors,
   async (req, res) => {
     try {
