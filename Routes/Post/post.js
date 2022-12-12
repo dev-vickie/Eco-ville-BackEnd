@@ -14,7 +14,7 @@ router.post(
   body("type").isIn(["GLASS", "ORGANIC", "PLASTIC", "METAL", "ELECTRONIC"]),
   body("image").isString(),
   body("description").isString(),
-  body("belongsToId"),
+
   handleErrors,
   async (req, res) => {
     try {
@@ -48,16 +48,42 @@ router.get("/", async (req, res) => {
   try {
     req.header("Content-Type", "application/json");
 
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany(
+      
+    );
     if (!posts) {
       throw new Error("Could not get posts");
     }
 
-    res.json({ posts });
+    res.send(posts);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
 });
+
+router.get("/type/:id", async (req, res) => {
+  try {
+    req.header("Content-Type", "application/json");
+
+    const posts = await prisma.post.findMany(
+      {
+        where: {
+          type: req.params.id
+        }
+      }
+
+      
+    );
+    if (!posts) {
+      throw new Error("Could not get posts");
+    }
+
+    res.send(posts);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
 
 router.get("/user/:id", async (req, res) => {
   try {

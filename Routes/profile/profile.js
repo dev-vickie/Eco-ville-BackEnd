@@ -48,7 +48,7 @@ router.get('/', async(req,res)=>{
     if(!profile){
       throw new Error("Could not fetch the profile")
     }
-    res.status(500).json({profile})
+    res.status(500).send(profile);
   }catch(e){
     res.status(500).json({message: e.message})
   }
