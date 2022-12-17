@@ -55,7 +55,7 @@ router.get("/", async (req, res) => {
       throw new Error("Could not get posts");
     }
 
-    res.send(posts);
+    res.json(posts);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
