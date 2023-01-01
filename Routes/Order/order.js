@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
     if (!orders) {
       throw new Error("Could not fetch orders");
     }
-    res.json({ orders });
+    res.send(orders);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
@@ -35,7 +35,7 @@ router.get("/:id", async (req, res) => {
     if (!order) {
       throw new Error("Could not fetch orders");
     }
-    res.json({ order });
+    res.send(order );
   } catch (e) {
     rmSync.status(500).json({ message: e.message });
   }

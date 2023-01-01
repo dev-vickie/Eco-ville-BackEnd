@@ -94,7 +94,7 @@ passport.use(
 
 
 
-app.get("/", (req, res) => {
+app.all("/", (req, res) => {
   res.send("This is the home page");
 });
 

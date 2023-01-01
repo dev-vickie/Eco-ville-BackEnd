@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,21 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-    id    Int     @id @default(autoincrement())
+  id           String   @id @default(cuid())
   firstName    String
   lastName     String
   password     String
   contactEmail String   @unique
   createdAt    DateTime @default(now())
-  profile      Profile?
   posts        Post[]
+  profile      Profile?
   order        order[]
 }
 
 model Profile {
-    id    Int     @id @default(autoincrement())
+  id           String @id @default(cuid())
   bio          String
   contactPhone Int
   location     String
@@ -36,30 +32,23 @@ model Profile {
   user         User   @relation(fields: [id], references: [id])
 }
 
-enum POST_TYPES {
-  GLASS
-  ORGANIC
-  PLASTIC
-  METAL
-  ELECTRONICt
-}
-
 model Post {
-   id    Int     @id @default(autoincrement())
+  id          String     @id @default(cuid())
   name        String
   location    String
   lon         Float
   lat         Float
   image       String
   description String
+  isClaimed   Boolean @default(false)
   type        POST_TYPES @default(PLASTIC)
-  belongsToId Int
+  belongsToId String
   createdAt   DateTime   @default(now())
   belongsTo   User       @relation(fields: [belongsToId], references: [id])
 }
 
 model order {
-    id    Int     @id @default(autoincrement())
+  id          String     @id @default(cuid())
   name        String
   location    String
   lon         Float
@@ -68,20 +57,28 @@ model order {
   image       String
   amount_bid  Float
   type        POST_TYPES @default(PLASTIC)
-  belongsToId Int
-  belongsTo   User       @relation(fields: [belongsToId], references: [id])
+  belongsToId String
   createdAt   DateTime   @default(now())
   quantity    QUANTITY   @default(SMALL)
+  belongsTo   User       @relation(fields: [belongsToId], references: [id])
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  feedback  String
+  createdAt DateTime @default(now())
+}
+
+enum POST_TYPES {
+  GLASS
+  ORGANIC
+  PLASTIC
+  METAL
+  ELECTRONIC
 }
 
 enum QUANTITY {
   SMALL
   MEDIUM
   HIGH
-}
-
-model Feedback {
-    id    Int     @id @default(autoincrement())
-  feedback String
-  createdAt DateTime @default(now())
 }

@@ -7,6 +7,7 @@ import {
 } from "../Auth/auth.js"
 import { handleErrors } from "../middleware/handleError.js";
 
+
 export const createUser =
   (body("firstName").isString(),
   body("lastName").isString(),
