@@ -58,17 +58,7 @@ router.post(
 
     try {
       const order = await prisma.order.create({
-        data: {
-          name: req.body.name,
-          location: req.body.location,
-          lon: req.body.lon,
-          lat: req.body.lat,
-          image: req.body.image,
-          description: req.body.description,
-          amount_bid: req.body.amount_bid,
-          belongsToId: req.user.id,
-          quantity: req.body.quantity,
-        },
+        data: {...req.body},
       });
       if (!order) {
         throw new Error("The order could not be placed");
@@ -89,14 +79,7 @@ router.put("/:id", handleErrors, async (req, res) => {
       where: {
         id: req.params.id,
       },
-      data: {
-        name: req.body.name,
-        location: req.body.location,
-        lon: req.body.lon,
-        lat: req.body.lat,
-        amount_bid: req.body.amount_bid,
-        quantity: req.body.quantity,
-      },
+      data: {...req.body},
     });
     if (!order) {
       throw new Error("The order could not be updated");
