@@ -18,13 +18,7 @@ router.post(
     try {
       const profile = await prisma.profile.create({
         data: {
-          id: req.user.id,
-          bio: req.body.bio,
-          contactPhone: req.body.contactPhone,
-          location: req.body.location,
-          lon: req.body.lon,
-          lat: req.body.lat,
-          image: req.body.image,
+          ...req.body,
         },
       });
       if (!profile) {
