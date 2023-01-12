@@ -18,9 +18,7 @@ export const createUser =
     try {
       var user = await prisma.user.create({
         data: {
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          contactEmail: req.body.contactEmail,
+          ...req.body,
           password: await hashPassword(req.body.password),
           // password: req.body.password
         },
