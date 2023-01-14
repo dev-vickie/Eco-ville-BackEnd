@@ -22,7 +22,9 @@ router.post(
 
       const post = await prisma.post.create({
         data: {
+
           ...req.body,
+
         },
       });
 
@@ -62,8 +64,6 @@ router.get("/type/:id", async (req, res) => {
           type: req.params.id
         }
       }
-
-      
     );
     if (!posts) {
       throw new Error("Could not get posts");
@@ -80,7 +80,7 @@ router.get("/user/:id", async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
       where: {
-        belongsToId: req.user.id,
+        belongsToId: req.params.id,
       },
     });
 
@@ -88,7 +88,7 @@ router.get("/user/:id", async (req, res) => {
       throw new Error("Could not fetch posts");
     }
 
-    res.json({ posts });
+    res.send(posts);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

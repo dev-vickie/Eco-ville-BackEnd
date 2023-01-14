@@ -57,7 +57,7 @@ export const signInUser =
       }
       const token = createJWT(user);
 
-      res.json({ id: user.id, token });
+      res.json({ id:user.id, token });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
