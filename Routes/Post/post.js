@@ -22,14 +22,9 @@ router.post(
 
       const post = await prisma.post.create({
         data: {
-          name: req.body.name,
-          location: req.body.location,
-          lon: req.body.lon,
-          lat: req.body.lat,
-          image: req.body.image,
-          description: req.body.description,
-          type: req.body.type,
-          belongsToId: req.body.id,
+
+          ...req.body,
+
         },
       });
 
@@ -48,9 +43,7 @@ router.get("/", async (req, res) => {
   try {
     req.header("Content-Type", "application/json");
 
-    const posts = await prisma.post.findMany(
-      
-    );
+    const posts = await prisma.post.findMany();
     if (!posts) {
       throw new Error("Could not get posts");
     }
