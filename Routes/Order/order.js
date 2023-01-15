@@ -48,9 +48,8 @@ router.post(
   body("lon"),
   body("lat"),
   body("image").isString(),
-  body("amount_bid"),
+  body("amount"),
   body("description").isString(),
-  body("token").isString(),
   handleErrors,
   async (req, res) => {
     req.header("Content-Type", "application/json");
