@@ -50,7 +50,6 @@ router.post(
   body("image").isString(),
   body("amount_bid"),
   body("description").isString(),
-  body("quantity").isIn(["SMALL", "MEDIUM", "HIGH"]),
   body("token").isString(),
   handleErrors,
   async (req, res) => {
@@ -65,9 +64,8 @@ router.post(
           lat: req.body.lat,
           image: req.body.image,
           description: req.body.description,
-          amount_bid: req.body.amount_bid,
-          belongsToId: req.body.id,
-          quantity: req.body.quantity,
+          amount_bid: req.body.amount,
+          belongsToId: req.user.id,
         },
       });
       if (!order) {
@@ -89,14 +87,7 @@ router.put("/:id", handleErrors, async (req, res) => {
       where: {
         id: req.params.id,
       },
-      data: {
-        name: req.body.name,
-        location: req.body.location,
-        lon: req.body.lon,
-        lat: req.body.lat,
-        amount_bid: req.body.amount_bid,
-        quantity: req.body.quantity,
-      },
+      data: {...req.body},
     });
     if (!order) {
       throw new Error("The order could not be updated");
