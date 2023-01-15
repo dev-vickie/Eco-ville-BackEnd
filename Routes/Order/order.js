@@ -66,7 +66,7 @@ router.post(
           image: req.body.image,
           description: req.body.description,
           amount_bid: req.body.amount_bid,
-          belongsToId: req.user.id,
+          belongsToId: req.body.id,
           quantity: req.body.quantity,
         },
       });
