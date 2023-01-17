@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import {
@@ -71,6 +71,9 @@ passport.use(
     },
     function (request, accessToken, refreshToken, profile, done) {
       console.log(profile);
+      console.log("accessToken " + accessToken);
+      console.log("refreshToken " + refreshToken);
+
       return done(null, profile);
     }
   )
@@ -87,6 +90,10 @@ passport.use(
     },
     function (request, accessToken, refreshToken, profile, done) {
       console.log(profile);
+      console.log("accessToken " + accessToken);
+      console.log();
+      console.log("refreshToken " + refreshToken);
+
       return done(null, profile);
     }
   )
@@ -111,9 +118,7 @@ app.get(
   passport.authenticate("google", { failureRedirect: "/error" }),
   async (req, res) => {
     try {
-      const firstName = req.user.name.givenName;
-      const lastName = req.user.name.familyName;
-      const email = req.user.emails[0].value;
+      
       res.header(
         "Access-Control-Allow-Origin",
         "*",
