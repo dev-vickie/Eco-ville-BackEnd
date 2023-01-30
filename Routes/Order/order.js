@@ -48,17 +48,24 @@ router.post(
   body("lon"),
   body("lat"),
   body("image").isString(),
-  body("amount_bid"),
+  body("amount"),
   body("description").isString(),
-  body("quantity").isIn(["SMALL", "MEDIUM", "HIGH"]),
-  body("token").isString(),
   handleErrors,
   async (req, res) => {
     req.header("Content-Type", "application/json");
 
     try {
       const order = await prisma.order.create({
-        data: {...req.body},
+        data: {
+          name: req.body.name,
+          location: req.body.location,
+          lon: req.body.lon,
+          lat: req.body.lat,
+          image: req.body.image,
+          description: req.body.description,
+          amount_bid: req.body.amount,
+          belongsToId: req.body.id,
+        },
       });
       if (!order) {
         throw new Error("The order could not be placed");
